@@ -1,5 +1,5 @@
 import { EarthType, Tile, WaterType } from "./enums";
-import { config, waters } from "./globalTerrain/defaultConfig";
+import { config, waters } from "./globalTerrain/config";
 import { countWaterToType, TileChance, TileCoefficient } from "./models";
 import { ExtTile, FTileType, TileType } from "./typings";
 

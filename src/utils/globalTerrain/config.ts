@@ -1,33 +1,37 @@
 import { WaterCount } from "../typings";
 
 export const config = {
-  water: {
-    chance: 0.05,
+  default: {
+    water: {
+      chance: 0.15,
 
-    //  shallow: 0, генерится автоматом
-    medium: {
-      chance: 0.9,
-      summary: 5,
+      //  shallow: 0, генерится автоматом
+      medium: {
+        chance: 0.9,
+        summary: 5,
+      },
+      deep: {
+        chance: 0.8,
+        summary: 7,
+      },
     },
-    deep: {
-      chance: 0.8,
-      summary: 7,
+    earth: {
+      sand: {
+        chance: 0.9,
+        summary: 2,
+      },
+      forest: {
+        chance: 0.4,
+        summary: 4,
+      },
+      mountain: {
+        chance: 0.2,
+        summary: 6,
+      },
     },
   },
-  earth: {
-    sand: {
-      chance: 0.9,
-      summary: 2,
-    },
-    forest: {
-      chance: 0.4,
-      summary: 4,
-    },
-    mountain: {
-      chance: 0.2,
-      summary: 6,
-    },
-  },
+  earth: {},
+  ocean: {},
 };
 
 export const waters: Record<WaterCount, { x: number; y: number }[][]> = {

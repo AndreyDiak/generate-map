@@ -13,8 +13,8 @@ export const TileCoefficient: Record<Tile, number> = {
 
 export const extTypeToColor: Record<WaterType | EarthType, string> = {
   shallow: "#77d9ff", // мелководье
-  medium: "#0f6d91", // средняя глубина
-  deep: "#004d70", // глубины
+  medium: "#3993b6", // средняя глубина
+  deep: "#0f6d91", // глубины
 
   sand: "#dcb694", // песок
   field: "#7fb875", // поле
