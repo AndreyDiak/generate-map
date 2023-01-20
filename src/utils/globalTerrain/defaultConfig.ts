@@ -2,7 +2,7 @@ import { WaterCount } from "../typings";
 
 export const config = {
   water: {
-    chance: 0.05,
+    chance: 0.2,
 
     //  shallow: 0, генерится автоматом
     medium: {
@@ -10,13 +10,13 @@ export const config = {
       summary: 5,
     },
     deep: {
-      chance: 0.8,
+      chance: 0.6,
       summary: 7,
     },
   },
   earth: {
     sand: {
-      chance: 0.9,
+      chance: 0.8,
       summary: 2,
     },
     forest: {
