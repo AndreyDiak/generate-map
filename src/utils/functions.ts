@@ -1,17 +1,17 @@
+import { defaultMapSize } from "../App";
 import { EarthType, Tile, WaterType } from "./enums";
 import { config, waters } from "./globalTerrain/config";
 import { countWaterToType, TileChance, TileCoefficient } from "./models";
-import { ExtTile, FTileType, TileType } from "./typings";
+import { ExtTile, FTileType, Terrain, TileType } from "./typings";
 
 export class MapT {
-  private mapSize: number;
+  private mapSize: number = defaultMapSize;
+  private terrain: Terrain = "default";
   private blank: FTileType[][] = [];
 
   private result: TileType[][] = [];
 
-  constructor(size: number) {
-    this.mapSize = size;
-  }
+  constructor() {}
 
   generateBlank() {
     let index = 0;
@@ -36,7 +36,7 @@ export class MapT {
 
   generateWater() {
     const waterTilesCount = Math.ceil(
-      config.water.chance * this.mapSize * this.mapSize
+      config[this.terrain].water.chance * this.mapSize * this.mapSize
     );
 
     const generateTileCoordinates = () => {
@@ -104,16 +104,16 @@ export class MapT {
 
         if (
           tile.type === Tile.WATER &&
-          summaryWater > config.water.medium.summary &&
+          summaryWater > config[this.terrain].water.medium.summary &&
           summaryEarth <= 2 &&
-          Math.random() < config.water.medium.chance
+          Math.random() < config[this.terrain].water.medium.chance
         ) {
           tile.extType = WaterType.MEDIUM;
         }
         if (
           tile.type === Tile.WATER &&
-          summaryWater > config.water.deep.summary &&
-          Math.random() < config.water.deep.chance
+          summaryWater > config[this.terrain].water.deep.summary &&
+          Math.random() < config[this.terrain].water.deep.chance
         ) {
           tile.extType = WaterType.DEEP;
         }
@@ -134,21 +134,21 @@ export class MapT {
 
         if (tile.type === Tile.EARTH) {
           if (
-            summaryWater > config.earth.sand.summary &&
-            Math.random() < config.earth.sand.chance
+            summaryWater > config[this.terrain].earth.sand.summary &&
+            Math.random() < config[this.terrain].earth.sand.chance
           ) {
             this.result[i][j].extType = EarthType.SAND;
           }
           if (
-            summaryEarth > config.earth.mountain.summary &&
-            Math.random() < config.earth.mountain.chance &&
+            summaryEarth > config[this.terrain].earth.mountain.summary &&
+            Math.random() < config[this.terrain].earth.mountain.chance &&
             summaryWater === 0
           ) {
             this.result[i][j].extType = EarthType.MOUNTAIN;
           } else {
             if (
-              summaryEarth > config.earth.forest.summary &&
-              Math.random() < config.earth.forest.chance &&
+              summaryEarth > config[this.terrain].earth.forest.summary &&
+              Math.random() < config[this.terrain].earth.forest.chance &&
               summaryWater === 0
             ) {
               this.result[i][j].extType = EarthType.FOREST;
@@ -161,7 +161,14 @@ export class MapT {
     return this;
   }
 
+  setOptions(size: number, terrain: Terrain) {
+    this.mapSize = size;
+    this.terrain = terrain;
+    return this;
+  }
+
   zero() {
+    this.mapSize = defaultMapSize;
     this.blank = [];
     this.result = [];
     return this;
@@ -175,8 +182,13 @@ export class MapT {
     return this.result;
   }
 
-  generate() {
+  getMapSize() {
+    return this.mapSize;
+  }
+
+  generate(size: number, terrain: Terrain) {
     return this.zero()
+      .setOptions(size, terrain)
       .generateBlank()
       .generateWater()
       .generateBigWater()
@@ -185,51 +197,6 @@ export class MapT {
       .getResult();
   }
 }
-
-// const result: FTileType[][] = [];
-// let map: TileType[][] | null[][] = Array(mapSize)
-//   .fill(null)
-//   .map((_) => Array(mapSize).fill(null));
-// const coefficients = checkNearestTiles(j, i, map.slice());
-// const summary = calculateCoefficient(coefficients);
-
-// const summaryWater = summary.water * TileCoefficient[Tile.WATER] || 0;
-// const summaryEarth = summary.earth * TileCoefficient[Tile.EARTH] || 0;
-// const chance = Math.random();
-//     if (chance > chanceBorder) {
-//       if (!summary.water || summary.water === 0) {
-//         const deepEarthChance = Math.random();
-
-//         tile.extType =
-//           deepEarthChance > 0.8
-//             ? EarthType.MOUNTAIN
-//             : deepEarthChance > 0.4
-//             ? EarthType.FOREST
-//             : EarthType.FIELD;
-//       } else {
-//         if (!!summary.water && summary.water >= 2) {
-//           tile.extType = EarthType.SAND;
-//         } else {
-//           tile.extType =
-//             Math.random() > 0.5 ? EarthType.FIELD : EarthType.FOREST;
-//         }
-//       }
-//       tile.type = Tile.EARTH;
-//     } else {
-//       // water
-//       tile.type = Tile.WATER;
-//       if (!summary.earth || summary.earth === 0) {
-//         tile.extType = WaterType.DEEP;
-//       } else {
-//         if (!!summary.earth && summary.earth >= 2) {
-//           tile.extType = WaterType.SHALLOW;
-//         } else {
-//           tile.extType = WaterType.MEDIUM;
-//         }
-//       }
-//     }
-
-export function generateWaterMap(blank: FTileType[][]) {}
 
 function checkNearestTiles(x: number, y: number, map: FTileType[][]) {
   // [x,x,x] Coordinates of this cells

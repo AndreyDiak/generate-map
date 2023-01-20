@@ -1,5 +1,36 @@
 import { EarthType, Tile, WaterType } from "./enums";
-import { WaterCount } from "./typings";
+import { Terrain, TileSize, WaterCount } from "./typings";
+
+export const options = {
+  terrain: [
+    {
+      label: "Дефолт",
+      value: "default",
+    },
+    {
+      label: "Суша",
+      value: "earth",
+    },
+    {
+      label: "Водный",
+      value: "ocean",
+    },
+  ],
+  tileSize: [
+    {
+      label: "Маленькая",
+      value: "small",
+    },
+    {
+      label: "Средняя",
+      value: "medium",
+    },
+    {
+      label: "Большая",
+      value: "big",
+    },
+  ],
+};
 
 export const TileChance: Record<Tile, number> = {
   earth: 0.7,
@@ -20,6 +51,27 @@ export const extTypeToColor: Record<WaterType | EarthType, string> = {
   field: "#7fb875", // поле
   forest: "#3e8630", // лес
   montain: "#9f9f9f", // горы
+};
+
+export const terrainToColor: Record<Terrain, { bg: string; border: string }> = {
+  default: {
+    bg: "#fafafa",
+    border: "#d0d0d0",
+  },
+  earth: {
+    bg: "#6bc172",
+    border: "#3f8045",
+  },
+  ocean: {
+    bg: "#9de4ff",
+    border: "#3e829c",
+  },
+};
+
+export const tileSizeToPx: Record<TileSize, number> = {
+  small: 400,
+  medium: 500,
+  big: 600,
 };
 
 export const countWaterToType: Record<number, WaterCount> = {

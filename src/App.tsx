@@ -1,43 +1,56 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import { extTypeToColor, MapT } from "./utils";
+import { Map } from "./components/Map";
+import { Menu } from "./components/menu/Menu";
+import { MapT, Terrain, TileSize, tileSizeToPx, TileType } from "./utils";
+
+export const defaultMapSize = 12;
+
+const mapT = new MapT();
 
 function App() {
-  const size = 12;
-  const tileSize = Number((500 / size).toFixed(0));
-  const mapT = new MapT(size);
+  const [size, setSize] = useState<number>(defaultMapSize);
+  const [terrain, setTerrain] = useState<Terrain>("default");
+  const [tileSize, setTileSize] = useState<TileSize>("medium");
+  const [tileSizeInPx, setTileSizeInPx] = useState<number>(
+    Number((tileSizeToPx[tileSize] / mapT.getMapSize()).toFixed(0))
+  );
+  const [useAutoUpdate, setUseAutoUpdate] = useState<boolean>(false);
 
-  const [map, setMap] = useState(mapT.generate());
+  const [map, setMap] = useState<TileType[][]>([]);
+
+  const updateMap = () => {
+    setMap(mapT.generate(size, terrain));
+    setTileSizeInPx(
+      Number((tileSizeToPx[tileSize] / mapT.getMapSize()).toFixed(0))
+    );
+  };
+
+  useEffect(() => {
+    setMap(mapT.generate(size, terrain));
+  }, []);
+
+  useEffect(() => {
+    if (useAutoUpdate) {
+      updateMap();
+    }
+  }, [terrain, tileSize, size]);
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen h-screen">
-      <button
-        className="my-4 bg-gray-300 py-1 px-2 rounded-md"
-        onClick={() => setMap(mapT.generate())}
-      >
-        generate map
-      </button>
-      <div
-        className="flex flex-col gap-y-1"
-        style={{
-          maxWidth: size * tileSize + tileSize,
-        }}
-      >
-        {map.map((row, i) => (
-          <span key={i} className="mx-auto flex gap-x-1">
-            {row.map((tile, j) => (
-              <div
-                key={j}
-                style={{
-                  width: tileSize,
-                  height: tileSize,
-                  backgroundColor: extTypeToColor[tile.extType!],
-                }}
-              ></div>
-            ))}
-          </span>
-        ))}
-      </div>
+    <div className="grid grid-cols-2 items-center content-center justify-center w-screen h-screen">
+      <Menu
+        terrain={terrain}
+        setTerrain={setTerrain}
+        mapSize={size}
+        setMapSize={setSize}
+        tileSize={tileSize}
+        setTileSize={setTileSize}
+        useAutoUpdate={useAutoUpdate}
+        setUseAutoUpdate={setUseAutoUpdate}
+        generate={updateMap}
+      />
+
+      <Map map={map} size={size} tileSize={tileSizeInPx} />
     </div>
   );
 }
