@@ -1,5 +1,4 @@
 import React from "react";
-import { Terrain } from "../../../utils";
 import { Label } from "../../common/label/Label";
 import { Wrapper } from "../../common/wrapper/Wrapper";
 

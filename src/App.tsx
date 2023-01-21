@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { Map } from "./components/Map";
 import { Menu } from "./components/menu/Menu";
+import { Preview } from "./components/Preview";
 import { MapT, Terrain, TileSize, tileSizeToPx, TileType } from "./utils";
 
 export const defaultMapSize = 12;
@@ -37,20 +38,23 @@ function App() {
   }, [terrain, tileSize, size]);
 
   return (
-    <div className="grid grid-cols-2 items-center content-center justify-center w-screen h-screen">
-      <Menu
-        terrain={terrain}
-        setTerrain={setTerrain}
-        mapSize={size}
-        setMapSize={setSize}
-        tileSize={tileSize}
-        setTileSize={setTileSize}
-        useAutoUpdate={useAutoUpdate}
-        setUseAutoUpdate={setUseAutoUpdate}
-        generate={updateMap}
-      />
+    <div className="flex flex-col space-y-10 items-center justify-center w-screen h-screen">
+      <Preview tileSize={tileSizeInPx} />
+      <div className="grid grid-cols-2 items-center content-center justify-center">
+        <Menu
+          terrain={terrain}
+          setTerrain={setTerrain}
+          mapSize={size}
+          setMapSize={setSize}
+          tileSize={tileSize}
+          setTileSize={setTileSize}
+          useAutoUpdate={useAutoUpdate}
+          setUseAutoUpdate={setUseAutoUpdate}
+          generate={updateMap}
+        />
 
-      <Map map={map} size={size} tileSize={tileSizeInPx} />
+        <Map map={map} size={size} tileSize={tileSizeInPx} />
+      </div>
     </div>
   );
 }

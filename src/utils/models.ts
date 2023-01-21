@@ -46,7 +46,6 @@ export const extTypeToColor: Record<WaterType | EarthType, string> = {
   shallow: "#77d9ff", // мелководье
   medium: "#3993b6", // средняя глубина
   deep: "#0f6d91", // глубины
-
   sand: "#dcb694", // песок
   field: "#7fb875", // поле
   forest: "#3e8630", // лес
@@ -69,9 +68,9 @@ export const terrainToColor: Record<Terrain, { bg: string; border: string }> = {
 };
 
 export const tileSizeToPx: Record<TileSize, number> = {
-  small: 400,
-  medium: 500,
-  big: 600,
+  small: 500,
+  medium: 600,
+  big: 700,
 };
 
 export const countWaterToType: Record<number, WaterCount> = {
@@ -80,4 +79,24 @@ export const countWaterToType: Record<number, WaterCount> = {
   3: "medium",
   4: "big",
   5: "huge",
+};
+
+export const previewTiles = [
+  WaterType.DEEP,
+  WaterType.MEDIUM,
+  WaterType.SHALLOW,
+  EarthType.FIELD,
+  EarthType.FOREST,
+  EarthType.MOUNTAIN,
+  EarthType.SAND,
+];
+
+export const previewTilesMap: Record<WaterType | EarthType, string> = {
+  shallow: "мелководье",
+  medium: "средние глубины",
+  deep: "морские глубины",
+  field: "поле",
+  forest: "лес",
+  sand: "пляж",
+  montain: "горы",
 };

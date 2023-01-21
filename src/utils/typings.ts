@@ -9,10 +9,10 @@ export type Building = "Mine" | "Lumberjack" | "Fishing" | "Farm";
 export type Terrain = "default" | "earth" | "ocean";
 
 export type TileSize = "small" | "medium" | "big";
+
 export interface Config {
   water: {
     chance: number;
-
     medium: Settings;
     deep: Settings;
   };
